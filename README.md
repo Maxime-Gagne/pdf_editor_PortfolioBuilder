@@ -8,7 +8,7 @@ PortfolioBuilder runs 100% locally on your computer. Your files never leave your
 
 ========================================================================
 🚀 QUICK START GUIDE
-========================================================================
+
 
 1. Unzip the folder.
    (Do not run the .exe directly from inside the ZIP, extract the folder first).
@@ -34,7 +34,7 @@ The app comes with a default signature tool. To use your own signature:
 
 ========================================================================
 ⚠️ WINDOWS SECURITY WARNING ("Unknown Publisher")
-========================================================================
+
 
 When you launch the app for the first time, Windows Defender might show a blue window saying: 
 "Windows protected your PC. Microsoft Defender SmartScreen prevented an unrecognized app from starting."
@@ -49,7 +49,7 @@ This only happens once.
 
 ========================================================================
 ✨ KEY FEATURES
-========================================================================
+
 
 * 🔒 100% Private: No cloud uploads. Everything stays on your disk.
 * 💸 Lifetime Deal: No subscriptions. You own this version forever.
@@ -59,7 +59,7 @@ This only happens once.
 
 ========================================================================
 ⚖️ LICENSE & SOURCE CODE (Open Source Compliance)
-========================================================================
+
 
 PortfolioBuilder is Free Software.
 It is built upon the powerful PyMuPDF library.
@@ -73,7 +73,7 @@ Copyright (C) 2025 Maxime Gagné
 
 ========================================================================
 CREDITS
-========================================================================
+
 Powered by:
 - Python
 - PyMuPDF (Artifex Software, Inc.)
