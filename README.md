@@ -1,4 +1,7 @@
+##Download / Support
 
+You can build this from source for free (instructions below). 
+If you prefer a ready-to-use .exe without setting up Python, or simply want to support the project, you can buy the compiled version here: 👉https://emmixam.gumroad.com/l/xtgyrb ($9)
 
 # PortfolioBuilder
 
@@ -48,6 +51,7 @@ Powered by:
 - PyMuPDF (Artifex Software, Inc.)
 - Fabric.js
 - PDF.js
+
 
 
 
