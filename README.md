@@ -16,7 +16,7 @@ PortfolioBuilder runs 100% locally on your computer. Your files never leave your
    ```bash
    pip install -r requirements.txt
 
-========================================================================
+
 **✨ KEY FEATURES**
 ========================================================================
 
@@ -26,7 +26,7 @@ PortfolioBuilder runs 100% locally on your computer. Your files never leave your
 * 🛠️ Quick Edits: Add text, cover mistakes, insert images or signatures.
 * ⚡ Lightweight: No heavy installation required.
 
-========================================================================
+
 **⚖️ LICENSE & SOURCE CODE (Open Source Compliance)**
 ========================================================================
 
@@ -40,7 +40,7 @@ In compliance with the GNU Affero General Public License v3 (AGPLv3), the full s
 
 Copyright (C) 2025 Maxime Gagné
 
-========================================================================
+
 **CREDITS**
 ========================================================================
 Powered by:
@@ -48,5 +48,6 @@ Powered by:
 - PyMuPDF (Artifex Software, Inc.)
 - Fabric.js
 - PDF.js
+
 
 
