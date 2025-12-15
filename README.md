@@ -1,50 +1,20 @@
-# PortfolioBuilder
-The Privacy-First PDF Assembler & Editor
 
-Thank you for choosing PortfolioBuilder! 
-We built this tool because we believe you shouldn't have to pay a monthly subscription just to merge a few files, and you shouldn't have to upload your private documents to unknown servers.
+
+# PortfolioBuilder
+
+A local, privacy-first PDF editor and merger built with Python and FastAPI.
+This tool allows users to reorganize, merge, and edit PDF files without uploading data to the cloud.
+
 
 PortfolioBuilder runs 100% locally on your computer. Your files never leave your machine.
 
-========================================================================
-🚀 QUICK START GUIDE
-========================================================================
 
-1. Unzip the folder.
-   (Do not run the .exe directly from inside the ZIP, extract the folder first).
+## Installation (For Developers)
 
-2. Double-click on "PortfolioBuilder.exe".
-
-3. A black console window might appear briefly, then your default web browser will open automatically with the application ready to use.
-
-4. Start building:
-   - Click "Open Base PDF" to load your main document.
-   - Click "Add PDF File" (sidebar) to merge other documents (CV, Cover Letter, Projects...).
-   - Drag and drop pages in the sidebar to reorder them.
-   - Use "Whiteout" to hide old text and "Text" to add new information.
-   - Click "SAVE & EXPORT" when you are done.
-
-5. ✒️ CUSTOMIZING THE SIGNATURE
-The app comes with a default signature tool. To use your own signature:
-1. Open the "static" folder located next to the application.
-2. Replace the file named "signature.png" with your own image file.
-   (Note: Use a PNG with a transparent background for best results).
-3. Ensure your file is named exactly "signature.png".
-4. Restart the app.
-========================================================================
-⚠️ WINDOWS SECURITY WARNING ("Unknown Publisher")
-========================================================================
-
-When you launch the app for the first time, Windows Defender might show a blue window saying: 
-"Windows protected your PC. Microsoft Defender SmartScreen prevented an unrecognized app from starting."
-
-This is normal for independent software that hasn't paid for an expensive corporate certificate.
-
-To run the app:
-1. Click on "More info" (under the text).
-2. Click the "Run anyway" button.
-
-This only happens once.
+1. Clone the repository
+2. Install dependencies:
+   ```bash
+   pip install -r requirements.txt
 
 ========================================================================
 ✨ KEY FEATURES
