@@ -17,7 +17,7 @@ PortfolioBuilder runs 100% locally on your computer. Your files never leave your
    pip install -r requirements.txt
 
 ========================================================================
-✨ KEY FEATURES.
+**✨ KEY FEATURES**
 ========================================================================
 
 * 🔒 100% Private: No cloud uploads. Everything stays on your disk.
@@ -27,7 +27,7 @@ PortfolioBuilder runs 100% locally on your computer. Your files never leave your
 * ⚡ Lightweight: No heavy installation required.
 
 ========================================================================
-⚖️ LICENSE & SOURCE CODE (Open Source Compliance).
+**⚖️ LICENSE & SOURCE CODE (Open Source Compliance)**
 ========================================================================
 
 PortfolioBuilder is Free Software.
@@ -41,11 +41,12 @@ In compliance with the GNU Affero General Public License v3 (AGPLv3), the full s
 Copyright (C) 2025 Maxime Gagné
 
 ========================================================================
-CREDITS.
+**CREDITS**
 ========================================================================
 Powered by:
 - Python
 - PyMuPDF (Artifex Software, Inc.)
 - Fabric.js
 - PDF.js
+
 
