@@ -7,8 +7,8 @@ We built this tool because we believe you shouldn't have to pay a monthly subscr
 PortfolioBuilder runs 100% locally on your computer. Your files never leave your machine.
 
 ========================================================================
-🚀 QUICK START GUIDE
-
+*🚀 QUICK START GUIDE*
+========================================================================
 
 1. Unzip the folder.
    (Do not run the .exe directly from inside the ZIP, extract the folder first).
@@ -33,8 +33,8 @@ The app comes with a default signature tool. To use your own signature:
 4. Restart the app.
 
 ========================================================================
-⚠️ WINDOWS SECURITY WARNING ("Unknown Publisher")
-
+*⚠️ WINDOWS SECURITY WARNING ("Unknown Publisher")*
+========================================================================
 
 When you launch the app for the first time, Windows Defender might show a blue window saying: 
 "Windows protected your PC. Microsoft Defender SmartScreen prevented an unrecognized app from starting."
@@ -48,8 +48,8 @@ To run the app:
 This only happens once.
 
 ========================================================================
-✨ KEY FEATURES
-
+*✨ KEY FEATURES*
+========================================================================
 
 * 🔒 100% Private: No cloud uploads. Everything stays on your disk.
 * 💸 Lifetime Deal: No subscriptions. You own this version forever.
@@ -58,8 +58,8 @@ This only happens once.
 * ⚡ Lightweight: No heavy installation required.
 
 ========================================================================
-⚖️ LICENSE & SOURCE CODE (Open Source Compliance)
-
+*⚖️ LICENSE & SOURCE CODE (Open Source Compliance)*
+========================================================================
 
 PortfolioBuilder is Free Software.
 It is built upon the powerful PyMuPDF library.
@@ -72,8 +72,8 @@ In compliance with the GNU Affero General Public License v3 (AGPLv3), the full s
 Copyright (C) 2025 Maxime Gagné
 
 ========================================================================
-CREDITS
-
+*CREDITS*
+========================================================================
 Powered by:
 - Python
 - PyMuPDF (Artifex Software, Inc.)
