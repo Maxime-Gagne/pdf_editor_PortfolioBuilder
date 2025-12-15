@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Portfolio Builder</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.1/fabric.min.js"></script>
+    <style>
+        /* --- GLOBAL LAYOUT --- */
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
+            margin: 0; padding: 0; 
+            height: 100vh; 
+            overflow: hidden; 
+            display: flex; 
+            flex-direction: row; 
+            background: #eef2f5; /* Softer background */
+            color: #333;
+        }
+
+        /* --- SIDEBAR --- */
+        .sidebar { 
+            width: 280px; 
+            min-width: 280px; 
+            background: #ffffff; 
+            border-right: 1px solid #dae1e7; 
+            display: flex; 
+            flex-direction: column; 
+            padding: 20px; 
+            box-shadow: 2px 0 10px rgba(0,0,0,0.02);
+            z-index: 10;
+        }
+        
+        .sidebar-header {
+            margin-bottom: 25px;
+            text-align: center;
+        }
+        
+        .app-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #2c3e50;
+            letter-spacing: -0.5px;
+        }
+
+        .sidebar-label { 
+            font-size: 11px; 
+            font-weight: 700; 
+            color: #adb5bd; 
+            text-transform: uppercase; 
+            margin-bottom: 10px; 
+            letter-spacing: 1px;
+        }
+
+        /* --- MAIN AREA --- */
+        .main-content { 
+            flex-grow: 1; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            padding: 20px; 
+            height: 100%;
+            position: relative;
+        }
+
+        /* --- TOOLBAR --- */
+        .toolbar { 
+            background: white; 
+            padding: 12px 20px; 
+            border-radius: 12px; 
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08); 
+            margin-bottom: 20px; 
+            display: flex; 
+            flex-wrap: wrap; 
+            gap: 12px; 
+            align-items: center; 
+            justify-content: center; 
+        }
+
+        /* --- BUTTONS --- */
+        button { 
+            cursor: pointer; 
+            border: none; 
+            padding: 8px 14px; 
+            border-radius: 6px; 
+            background: #3b82f6; /* Modern Blue */
+            color: white; 
+            font-size: 13px; 
+            font-weight: 500;
+            display: flex; 
+            align-items: center; 
+            gap: 6px; 
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 4px rgba(59, 130, 246, 0.2);
+        }
+        button:hover { background: #2563eb; transform: translateY(-1px); }
+        button:active { transform: translateY(0); }
+
+        button.secondary { background: #64748b; box-shadow: none; } /* Gray buttons */
+        button.secondary:hover { background: #475569; }
+
+        button.action-btn { background: #10b981; } /* Green buttons */
+        button.action-btn:hover { background: #059669; }
+
+        button.danger-btn { background: #ef4444; box-shadow: none; } /* Red buttons */
+        button.danger-btn:hover { background: #dc2626; }
+
+        /* --- PAGE LIST --- */
+        #pages-list { overflow-y: auto; flex-grow: 1; padding-right: 5px; }
+        
+        .page-item { 
+            padding: 12px; 
+            margin-bottom: 8px; 
+            background: #f8fafc; 
+            border-radius: 8px; 
+            cursor: pointer; 
+            display: flex; 
+            align-items: center; 
+            border: 1px solid transparent; 
+            transition: all 0.2s; 
+        }
+        .page-item:hover { background: #f1f5f9; border-color: #cbd5e1; }
+        .page-item.active { 
+            background: #eff6ff; 
+            color: #3b82f6; 
+            border-color: #bfdbfe; 
+            font-weight: 600; 
+            box-shadow: 0 2px 4px rgba(59, 130, 246, 0.1);
+        }
+        .page-name { flex-grow: 1; margin-left: 10px; outline: none; font-size: 13px; }
+
+        /* --- CANVAS CONTAINER --- */
+        #editor-container { 
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15); 
+            border: 1px solid #e2e8f0; 
+            background: #525659; /* PDF Viewer Background color */
+            border-radius: 4px;
+        }
+        
+        .separator { width: 1px; background: #e2e8f0; height: 28px; margin: 0 5px; }
+        
+        /* Inputs styling */
+        input[type="color"] { width: 34px; height: 34px; border:none; cursor: pointer; background: none; border-radius: 4px; }
+        input[type="number"] { padding: 6px; border-radius: 6px; border: 1px solid #cbd5e1; width: 50px; text-align: center;}
+
+        /* Status Bar */
+        #status-bar {
+            margin-top: 15px;
+            font-size: 13px;
+            color: #64748b;
+            background: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+    </style>
+</head>
+<body>
+
+<div class="sidebar">
+    <div class="sidebar-header">
+        <div class="app-title">Portfolio Builder</div>
+    </div>
+    
+    <div style="margin-bottom:25px;">
+        <div class="sidebar-label">Import</div>
+        <button class="action-btn" style="width:100%; justify-content: center; padding: 12px;" 
+                onclick="document.getElementById('appendInput').click()"
+                title="Append another PDF file to the end of your document">
+            ➕ Add PDF File
+        </button>
+        <input type="file" id="appendInput" accept="application/pdf" style="display:none" onchange="appendPDF(this)">
+    </div>
+
+    <div class="sidebar-label">Pages Structure</div>
+    <div id="pages-list">
+        <div style="color:#94a3b8; text-align:center; font-size:13px; margin-top:40px; line-height: 1.6;">
+            Start by opening a<br>Base PDF file.
+        </div>
+    </div>
+</div>
+
+<div class="main-content">
+    
+    <div class="toolbar">
+        <input type="file" id="fileInput" accept="application/pdf" style="display:none" onchange="uploadPDF()">
+        <button class="secondary" onclick="document.getElementById('fileInput').click()" 
+                title="Open your main PDF document (e.g. Cover Page)">
+            📂 Open Base PDF
+        </button>
+        
+        <div class="separator"></div>
+
+        <button onclick="addWhiteRect()" title="Create a white box to hide existing text">
+            ⬜ Whiteout
+        </button>
+        <button onclick="addText()" title="Add a text box">
+            T Text
+        </button>
+        <button style="background:#f59e0b" onclick="addSavedSignature()" title="Insert your signature (signature.png)">
+            ✒️ Signature
+        </button>
+        <button style="background:#0ea5e9;" onclick="document.getElementById('imgInput').click()" title="Upload and insert an image (JPG/PNG)">
+            🖼️ Image
+        </button>
+        <input type="file" id="imgInput" accept="image/*" style="display:none" onchange="addLocalImage(this)">
+
+        <div class="separator"></div>
+        
+        <button class="secondary" onclick="moveLayer('down')" title="Send selected object backward">⬇ Back</button>
+        <button class="secondary" onclick="moveLayer('up')" title="Bring selected object forward">⬆ Front</button>
+        
+        <div class="separator"></div>
+
+        <input type="color" id="text-color" value="#000000" onchange="updateStyle('fill')" title="Change Text Color">
+        <input type="number" id="font-size" value="18" onchange="updateStyle('fontSize')" title="Font Size">
+        <button class="danger-btn" onclick="deleteSelected()" title="Delete selected object (Delete Key)">🗑️</button>
+        
+        <div class="separator"></div>
+        
+        <button class="action-btn" style="padding: 10px 20px; font-weight: 600;" onclick="saveAndDownload()"
+                title="Save changes and download the new PDF">
+            💾 SAVE & EXPORT
+        </button>
+    </div>
+
+    <div id="editor-container">
+        <canvas id="c"></canvas>
+    </div>
+    
+    <div id="status-bar">Ready. Waiting for file...</div>
+</div>
+
+<script>
+    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
+
+    let canvas;
+    let currentPdf = null;
+    let currentFilename = "";
+    let pagesData = []; 
+    let activePageIndex = 0;
+
+    // Helper for status updates
+    function setStatus(msg) {
+        document.getElementById('status-bar').textContent = msg;
+    }
+
+    window.onload = function() {
+        canvas = new fabric.Canvas('c');
+        
+        // Delete Key Support
+        window.addEventListener('keydown', (e) => {
+            if ((e.key === "Delete" || e.key === "Backspace") && !canvas.getActiveObject()?.isEditing) {
+                deleteSelected();
+            }
+        });
+        
+        // Update UI on selection
+        canvas.on('selection:created', (e) => { updateUI(); setStatus("Object selected. Use toolbar to edit."); });
+        canvas.on('selection:updated', (e) => { updateUI(); });
+        canvas.on('selection:cleared', (e) => { setStatus("Ready."); });
+    };
+
+    function updateUI() {
+        const obj = canvas.getActiveObject();
+        if(obj && obj.type === 'i-text') {
+            document.getElementById('text-color').value = obj.fill;
+            document.getElementById('font-size').value = obj.fontSize;
+        }
+    }
+
+    // --- TOOL FUNCTIONS ---
+
+    function addWhiteRect() {
+        const rect = new fabric.Rect({
+            left: 100, top: 100, width: 200, height: 40,
+            fill: '#ffffff', 
+            stroke: '#94a3b8', strokeWidth: 1, strokeDashArray: [5, 5]
+        });
+        canvas.add(rect);
+        canvas.setActiveObject(rect);
+        setStatus("Whiteout added. Resize it to cover text.");
+    }
+
+    function moveLayer(direction) {
+        const obj = canvas.getActiveObject();
+        if(!obj) return;
+        direction === 'up' ? canvas.bringForward(obj) : canvas.sendBackwards(obj);
+        canvas.renderAll();
+    }
+
+    function addText() { 
+        const t = new fabric.IText('Your Text', { left: 50, top: 50, fontSize: 20, fill: document.getElementById('text-color').value }); 
+        canvas.add(t); 
+        canvas.setActiveObject(t);
+        setStatus("Text added. Double click to edit.");
+    }
+    
+    function deleteSelected() { 
+        const obj = canvas.getActiveObject();
+        if(obj) { canvas.remove(obj); setStatus("Object deleted."); }
+    }
+    
+    function updateStyle(prop) { 
+        const obj = canvas.getActiveObject(); 
+        if(obj) { 
+            obj.set(prop, document.getElementById(prop==='fill'?'text-color':'font-size').value); 
+            canvas.renderAll(); 
+        }
+    }
+    
+    function addSavedSignature() {
+        fabric.Image.fromURL('/static/signature.png?v='+Date.now(), i=>{ 
+            if(i){ i.scaleToWidth(150); canvas.add(i); canvas.setActiveObject(i); setStatus("Signature added."); } 
+            else { alert("No signature found in static folder."); }
+        }, {crossOrigin:'anonymous'});
+    }
+    
+    function addLocalImage(inp) {
+        if(inp.files[0]) {
+            const r = new FileReader();
+            r.onload = e => fabric.Image.fromURL(e.target.result, i=>{
+                i.scaleToWidth(200); canvas.add(i); canvas.setActiveObject(i);
+                setStatus("Image uploaded.");
+            });
+            r.readAsDataURL(inp.files[0]); inp.value='';
+        }
+    }
+
+    // --- FILE & NAVIGATION ---
+
+    async function uploadPDF() {
+        const fileInput = document.getElementById('fileInput');
+        if (fileInput.files.length === 0) return;
+        const formData = new FormData();
+        formData.append("file", fileInput.files[0]);
+        setStatus("Uploading base PDF...");
+        
+        try {
+            const res = await fetch('http://127.0.0.1:8001/api/upload', {method:'POST', body:formData});
+            const d = await res.json();
+            if(d.status === 'success') {
+                currentFilename = d.data.filename;
+                await loadPDFDocument(`http://127.0.0.1:8001/uploads/${currentFilename}`);
+                setStatus("PDF Loaded. Drag pages to reorder.");
+            }
+        } catch(e){ console.error(e); setStatus("Error loading file."); }
+    }
+    
+    async function appendPDF(input) {
+        if(!currentFilename) { alert("Please open a Base PDF first!"); return; }
+        const fd = new FormData(); 
+        fd.append("file", input.files[0]); 
+        fd.append("current_filename", currentFilename);
+        setStatus("Merging PDF...");
+        
+        try {
+            const res = await fetch('http://127.0.0.1:8001/api/append', {method:'POST', body:fd});
+            const d = await res.json();
+            if(d.status === 'success') {
+                const oldIdx = activePageIndex;
+                await loadPDFDocument(`http://127.0.0.1:8001/uploads/${currentFilename}`);
+                if(oldIdx < pagesData.length) loadPageFromVirtualIndex(oldIdx);
+                setStatus("PDF merged successfully!");
+            } else { alert("Error: " + d.message); }
+        } catch(e) { console.error(e); }
+        input.value='';
+    }
+
+    async function loadPDFDocument(url) {
+        const loadingTask = pdfjsLib.getDocument(url);
+        currentPdf = await loadingTask.promise;
+        
+        pagesData = [];
+        for(let i=0; i<currentPdf.numPages; i++) {
+            pagesData.push({ originalIndex:i, label:`Page ${i+1}` });
+        }
+        renderSidebar();
+        loadPageFromVirtualIndex(0);
+    }
+    
+    async function loadPageFromVirtualIndex(idx) {
+        if(!pagesData[idx]) return;
+        activePageIndex = idx;
+        const realIdx = pagesData[idx].originalIndex;
+        
+        // UI Sidebar
+        document.querySelectorAll('.page-item').forEach(e => e.classList.remove('active'));
+        const activeItem = document.getElementById('pages-list').children[idx];
+        if(activeItem) activeItem.classList.add('active');
+        
+        // Render PDF
+        const page = await currentPdf.getPage(realIdx+1);
+        const scale = 1.2;
+        const vp = page.getViewport({scale:scale});
+        
+        const cvs = document.createElement('canvas'); 
+        const ctx = cvs.getContext('2d');
+        cvs.width = vp.width; cvs.height = vp.height;
+        await page.render({canvasContext:ctx, viewport:vp}).promise;
+        
+        canvas.clear();
+        canvas.setWidth(vp.width); canvas.setHeight(vp.height);
+        canvas.setBackgroundImage(new fabric.Image(cvs), canvas.renderAll.bind(canvas));
+        setStatus(`Editing: ${pagesData[idx].label}`);
+    }
+
+    function renderSidebar() {
+        const list = document.getElementById('pages-list'); 
+        list.innerHTML='';
+        
+        pagesData.forEach((p,i) => {
+            const div = document.createElement('div'); 
+            div.className = `page-item ${i===activePageIndex?'active':''}`;
+            div.title = "Drag to reorder / Click to rename"; // Tooltip for page item
+            div.innerHTML = `<span style="margin-right:10px; font-size:16px;">📄</span><span class="page-name" contenteditable="true" onblur="updatePageLabel(${i}, this)">${p.label}</span>`;
+            div.onclick = () => loadPageFromVirtualIndex(i);
+            
+            // Drag & Drop
+            div.draggable = true;
+            div.ondragstart = e => { e.dataTransfer.setData('idx', i); };
+            div.ondragover = e => e.preventDefault();
+            div.ondrop = e => {
+                e.preventDefault();
+                const oldIdx = parseInt(e.dataTransfer.getData('idx'));
+                if(oldIdx === i) return;
+                const item = pagesData.splice(oldIdx, 1)[0];
+                pagesData.splice(i, 0, item);
+                if(activePageIndex === oldIdx) activePageIndex = i;
+                renderSidebar();
+                loadPageFromVirtualIndex(activePageIndex); 
+                setStatus("Page reordered.");
+            };
+            list.appendChild(div);
+        });
+    }
+
+    function updatePageLabel(idx, el) {
+        if(pagesData[idx]) pagesData[idx].label = el.textContent;
+    }
+
+    // --- SAVE ---
+
+    async function saveAndDownload() {
+        if (!currentFilename) { alert("No file loaded!"); return; }
+        setStatus("Processing & Saving...");
+
+        const exportObjects = canvas.getObjects().map(obj => {
+            let data = {
+                type: obj.type, left: obj.left, top: obj.top,
+                width: obj.getScaledWidth(), height: obj.getScaledHeight()
+            };
+            if (obj.type === 'rect') { data.fill = obj.fill; }
+            else if (obj.type === 'i-text') {
+                data.text = obj.text; data.fontSize = obj.fontSize * obj.scaleY;
+                data.color = obj.fill; data.fontFamily = obj.fontFamily;
+            }
+            else if (obj.type === 'image') { data.data_url = obj.toDataURL(); }
+            return data;
+        });
+
+        const newPageOrder = pagesData.map(p => p.originalIndex);
+        const currentOriginalPage = pagesData[activePageIndex].originalIndex + 1;
+
+        try {
+            const response = await fetch('http://127.0.0.1:8001/api/save', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    filename: currentFilename,
+                    page_num: currentOriginalPage,
+                    scale: 1.2,
+                    objects: exportObjects,
+                    page_order: newPageOrder
+                })
+            });
+
+            const result = await response.json();
+            if (result.status === "success") {
+                const link = document.createElement('a');
+                link.href = `http://127.0.0.1:8001/uploads/${result.new_filename}`;
+                link.download = result.new_filename;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                
+                currentFilename = result.new_filename;
+                await loadPDFDocument(`http://127.0.0.1:8001/uploads/${result.new_filename}`);
+                setStatus("Saved successfully!");
+            } else { alert("Save Error: " + result.message); }
+        } catch (e) { console.error(e); setStatus("Network Error"); }
+    }
+</script>
+
+</body>
+</html>

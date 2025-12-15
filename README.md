@@ -7,7 +7,7 @@ We built this tool because we believe you shouldn't have to pay a monthly subscr
 PortfolioBuilder runs 100% locally on your computer. Your files never leave your machine.
 
 ========================================================================
-*🚀 QUICK START GUIDE*
+🚀 QUICK START GUIDE
 ========================================================================
 
 1. Unzip the folder.
@@ -23,7 +23,7 @@ PortfolioBuilder runs 100% locally on your computer. Your files never leave your
    - Drag and drop pages in the sidebar to reorder them.
    - Use "Whiteout" to hide old text and "Text" to add new information.
    - Click "SAVE & EXPORT" when you are done.
-  
+
 5. ✒️ CUSTOMIZING THE SIGNATURE
 The app comes with a default signature tool. To use your own signature:
 1. Open the "static" folder located next to the application.
@@ -31,9 +31,8 @@ The app comes with a default signature tool. To use your own signature:
    (Note: Use a PNG with a transparent background for best results).
 3. Ensure your file is named exactly "signature.png".
 4. Restart the app.
-
 ========================================================================
-*⚠️ WINDOWS SECURITY WARNING ("Unknown Publisher")*
+⚠️ WINDOWS SECURITY WARNING ("Unknown Publisher")
 ========================================================================
 
 When you launch the app for the first time, Windows Defender might show a blue window saying: 
@@ -48,7 +47,7 @@ To run the app:
 This only happens once.
 
 ========================================================================
-*✨ KEY FEATURES*
+✨ KEY FEATURES
 ========================================================================
 
 * 🔒 100% Private: No cloud uploads. Everything stays on your disk.
@@ -58,7 +57,7 @@ This only happens once.
 * ⚡ Lightweight: No heavy installation required.
 
 ========================================================================
-*⚖️ LICENSE & SOURCE CODE (Open Source Compliance)*
+⚖️ LICENSE & SOURCE CODE (Open Source Compliance)
 ========================================================================
 
 PortfolioBuilder is Free Software.
@@ -72,7 +71,7 @@ In compliance with the GNU Affero General Public License v3 (AGPLv3), the full s
 Copyright (C) 2025 Maxime Gagné
 
 ========================================================================
-*CREDITS*
+CREDITS
 ========================================================================
 Powered by:
 - Python
